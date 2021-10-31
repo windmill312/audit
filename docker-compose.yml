@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  audit_db:
+    container_name: audit_db
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/
+    ports:
+      - 5433:5432
+    command: [ "postgres", "-c", "log_statement=all" ]
+
+  audit_app:
+    build: .
+    container_name: audit_app
+    ports:
+      - 8101:8101
+    depends_on:
+      - audit_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://audit_db:5432/audit
+      - SPRING_DATASOURCE_USERNAME=audit
+      - SPRING_DATASOURCE_PASSWORD=audit

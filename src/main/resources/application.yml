@@ -1,0 +1,22 @@
+server:
+  port: 8101
+
+spring:
+  application:
+    name: audit
+  datasource:
+    username: audit
+    password: audit
+    url: jdbc:postgresql://localhost/audit
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/changelog-master.yml
+    database-change-log-lock-table: "databasechangeloglock"
+    database-change-log-table: "databasechangelog"
+    liquibase-schema: audit
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults = false
